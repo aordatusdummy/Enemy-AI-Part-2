@@ -1,0 +1,104 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1f54dfa6273ce64f8a6d2ebd53bd8a9, type: 3}
+  m_Name: Empty
+  m_EditorClassIdentifier: 
+  strategyTacticalAwareness:
+    statBase: 0
+    statCons: 0
+    statMarg: 0
+  strategyPositionalAwareness:
+    statBase: 0
+    statCons: 0
+    statMarg: 0
+  strategyStrategemAgility:
+    statBase: 0
+    statCons: 0
+    statMarg: 0
+  strategyCalculativeAgility:
+    statBase: 0
+    statCons: 0
+    statMarg: 0
+  strategyInitiative:
+    statBase: 0
+    statCons: 0
+    statMarg: 0
+  wisdomRiskTolerance:
+    statBase: 0
+    statCons: 0
+    statMarg: 0
+  wisdomStability:
+    statBase: 0
+    statCons: 0
+    statMarg: 0
+  wisdomCourage:
+    statBase: 0
+    statCons: 0
+    statMarg: 0
+  wisdomResilience:
+    statBase: 0
+    statCons: 0
+    statMarg: 0
+  wisdomExperience:
+    statBase: 0
+    statCons: 0
+    statMarg: 0
+  personalityCommunication:
+    statBase: 0
+    statCons: 0
+    statMarg: 0
+  personalityObedience:
+    statBase: 0
+    statCons: 0
+    statMarg: 0
+  personalityImagination:
+    statBase: 0
+    statCons: 0
+    statMarg: 0
+  personalityHonor:
+    statBase: 0
+    statCons: 0
+    statMarg: 0
+  personalityAgression:
+    statBase: 0
+    statCons: 0
+    statMarg: 0
+  skillRankOrder:
+    statBase: 0
+    statCons: 0
+    statMarg: 0
+  skillMemory:
+    statBase: 0
+    statCons: 0
+    statMarg: 0
+  skillControlMastery:
+    statBase: 0
+    statCons: 0
+    statMarg: 0
+  skillManeuverMastery:
+    statBase: 0
+    statCons: 0
+    statMarg: 0
+  skillGearMastery:
+    statBase: 0
+    statCons: 0
+    statMarg: 0
+  behaviorManeuverPreference: 
+  behaviorSpeedPreference:
+    statBase: 0
+    statCons: 0
+    statMarg: 0
+  behaviorAltitudePreference:
+    statBase: 0
+    statCons: 0
+    statMarg: 0
+  isEmpty: 1
