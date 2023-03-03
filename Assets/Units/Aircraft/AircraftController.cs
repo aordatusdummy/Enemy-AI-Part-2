@@ -29,7 +29,7 @@ public class AircraftController : MonoBehaviour
 
     [SerializeField] protected Transform crashCollidersRoot;
 
-    [SerializeField] protected AircraftBase aircraftBase;
+    [SerializeField] protected AircraftCore AircraftCore;
     #endregion
 
     #region Audio
@@ -76,7 +76,7 @@ public class AircraftController : MonoBehaviour
 
     protected void RotatePropellers(GameObject[] _rotateThese)
     {
-        float _propelSpeed = currentSpeed * aircraftBase.PropelSpeedMultiplier;
+        float _propelSpeed = currentSpeed * AircraftCore.PropelSpeedMultiplier;
 
         for (int i = 0; i < _rotateThese.Length; i++)
         {
@@ -86,7 +86,7 @@ public class AircraftController : MonoBehaviour
 
     protected void ControlEngineLights(Light[] _lights, float _intensity)
     {
-        float _propelSpeed = currentSpeed * aircraftBase.PropelSpeedMultiplier;
+        float _propelSpeed = currentSpeed * AircraftCore.PropelSpeedMultiplier;
 
         for (int i = 0; i < _lights.Length; i++)
         {
@@ -154,7 +154,7 @@ public class AircraftController : MonoBehaviour
     //Returns a percentage of how fast the current speed is from the maximum speed between 0 and 1
     public float PercentToMaxSpeed()
     {
-        float _percentToMax = currentSpeed / aircraftBase.TurboSpeed;
+        float _percentToMax = currentSpeed / AircraftCore.TurboSpeed;
 
         return _percentToMax;
     }
@@ -166,7 +166,7 @@ public class AircraftController : MonoBehaviour
 
     public bool UsingTurbo()
     {
-        if (maxSpeed == aircraftBase.TurboSpeed)
+        if (maxSpeed == AircraftCore.TurboSpeed)
         {
             return true;
         }

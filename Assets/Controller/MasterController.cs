@@ -23,14 +23,18 @@ public class HigherConsoleItem
         intItem,
         floatItem,
         stringItem,
-        aircraftItem
+        aircraftItem,
+        enemyItem,
+        situationItem
     }
 
     public enum ItemName //Using this enumerated type to know what is this setting
     {
         maxEnemySpawn,
-        enemyAircraft,
-        playerAircraft,
+        enemyAircraftCore,
+        enemySituationCore,
+        enemyEnemyCore,
+        playerAircraftCore,
         playerSpeedMultiplier
     }
 
@@ -44,20 +48,22 @@ public class HigherConsoleItem
     public string ConsoleInstruction { get { return consoleInstruction; } }
     public GameObject ItemSpawned { get; set; }
     public HigherConsoleItemSemiCore HCISemiCore { get { return ItemSpawned.GetComponent<HigherConsoleItemSemiCore>(); } }
-
-    public 
 }
 #endregion
 
 public class MasterController : MonoBehaviour
 {
-    #region Lower and higher console setup
-    [Header("Console")]
+    #region Lower, medium and higher console setup
+    [Header("[Console]")]
     [SerializeField] private Canvas consoleCanvas;
     [SerializeField] private TextMeshProUGUI lowerConsoleText;
     [SerializeField] private Transform higherConsoleContentTrasform;
     [SerializeField] private List<HigherConsoleItem> higherConsoleItemList;
     [SerializeField] private GameObject higherConsoleItemPrefab;
+    [SerializeField] private TextMeshProUGUI mediumConsoleText;
+    [SerializeField] private GameObject higherConsole;
+    [SerializeField] private GameObject lowerConsole;
+    [SerializeField] private GameObject mediumConsole;
 
     //Helpers
     private string lowerConsoleDefaultText;
@@ -72,31 +78,40 @@ public class MasterController : MonoBehaviour
     #endregion
 
     #region General management setup
-    [Header("Level")]
+    [Header("[Level]")]
     [SerializeField] private string nextLevel;
 
-    [Header("Essentials")]
+    [Header("[Essentials]")]
     [SerializeField] private Camera emptyCamera; //This camera is setup for opening settings canvas
     [SerializeField] private GameObject domainRoot; //Whole environment
+    [SerializeField] private GameObject unitsRoot;
 
     //Helpers
     public GamePhase CurrentGamePhase { get; set; }
     #endregion
 
     #region Spawning units setup
-    [Header("Player Spawn")]
+    [Header("[Player Spawn]")]
     [SerializeField] GameObject currentPlayer;
     [SerializeField] private Transform playerSpawnLocation;
+    [SerializeField] private float playerSpeedMultiplier;
 
-    [Header("Enemy Spawn")] //Later we will be adding arrays of enemies prefab for more variety spawn or we can create a scriptable object for test cases with exact positions and prefabs.
+    [Header("[Enemy Spawn]")] //Later we will be adding arrays of enemies prefab for more variety spawn or we can create a scriptable object for test cases with exact positions and prefabs.
     [SerializeField] private int maxEnemyCount = 1;
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private Transform enemySpawnLocation;
     [SerializeField] private int enemySpawnAllowWhen = 3;
 
+    [Header("[Cores]")]
+    [SerializeField] private List<AircraftCore> aircraftCores = new List<AircraftCore>();
+    [SerializeField] private List<SituationCore> situationCores = new List<SituationCore>();
+    [SerializeField] private List<EnemyCore> enemyCores = new List<EnemyCore>();
+
     //Helpers
     private int currentEnemyCount = 0;
     private bool allowEnemySpawn = false;
+    private List<GameObject> enemySpawnedList = new List<GameObject>();
+    private GameObject playerSpawned;
     #endregion
 
     #region Basic
@@ -124,25 +139,35 @@ public class MasterController : MonoBehaviour
                     CurrentGamePhase = GamePhase.Termination;
                     break;
                 case GamePhase.Termination:
-                    Debug.Log("Cannot go to next phase from Termination.");
+                    SceneManager.LoadScene(nextLevel);
                     break;
             }
             PhaseRun();
+        }
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            if(CurrentGamePhase == GamePhase.Termination) { SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); }
         }
     }
     private void PhaseRun() //Checking which phase to run by reading current Game Phase
     {
         if (CurrentGamePhase == GamePhase.Preparation) { PreparationRun(); }
         if (CurrentGamePhase == GamePhase.Execution) { ExecutionRun(); }
+        if (CurrentGamePhase == GamePhase.Intermission) { IntermissionRun(); }
+        if (CurrentGamePhase == GamePhase.Termination) { TerminationRun(); }
+
     }
     #endregion
 
     #region Running preperation
     private void PreparationRun()
     {
+        CheckItemList(higherConsoleItemList);
         domainRoot.SetActive(true);
+        unitsRoot.SetActive(false);
         emptyCamera.gameObject.SetActive(true);
         consoleCanvas.gameObject.SetActive(true);
+        mediumConsole.gameObject.SetActive(false);
         lowerConsoleIsWorking = true;
         foreach (HigherConsoleItem HCI in higherConsoleItemList)
         {
@@ -152,8 +177,41 @@ public class MasterController : MonoBehaviour
             RestrictInput(HCI, newHCISemiCore);
             HCI.ItemSpawned = newHCI;
         }
-        LowerConsoleUpdate($"Welcome to scene - {SceneManager.GetActiveScene().name}.\nChange game settings by using the options above in the scroll view.\nPress N to start the game.", LowerConsoleTaskType.StayDefault);
+        LowerConsoleUpdate($"Welcome to scene - {SceneManager.GetActiveScene().name}. Current Phase - {CurrentGamePhase}.\nChange game settings by using the options above in the scroll view.\nPress N to start the game.", LowerConsoleTaskType.StayDefault);
     }
+
+    private void CheckItemList(List<HigherConsoleItem> HCIL)
+    {
+        HashSet<HigherConsoleItem.ItemName> names = new HashSet<HigherConsoleItem.ItemName>();
+        foreach (HigherConsoleItem item in HCIL)
+        {
+            if (!names.Add(item.ConsoleItemName))
+            {
+                Debug.LogError("Fail#1: Two or more HigherConsoleItems have the same ConsoleItemName: " + item.ConsoleItemName);
+            }
+        }
+    }
+
+    public void FillDropdown<T>(TMP_Dropdown dropdown, List<T> options) where T : UnityEngine.Object
+    {
+        // Clear the dropdown's current options
+        dropdown.ClearOptions();
+
+        // Create a new list of dropdown options
+        List<TMP_Dropdown.OptionData> dropdownOptions = new List<TMP_Dropdown.OptionData>();
+
+        // Loop through the list of options and add them to the dropdown
+        foreach (T option in options)
+        {
+            string optionName = option.name;
+            TMP_Dropdown.OptionData newOption = new TMP_Dropdown.OptionData(optionName);
+            dropdownOptions.Add(newOption);
+        }
+
+        // Add the options to the dropdown
+        dropdown.AddOptions(dropdownOptions);
+    }
+
     public void RestrictInput(HigherConsoleItem HCI, HigherConsoleItemSemiCore newHCISemiCore)
     {
         TMP_InputField inputField = newHCISemiCore.ConsoleInputField;
@@ -174,7 +232,15 @@ public class MasterController : MonoBehaviour
                 break;
             case HigherConsoleItem.ItemType.aircraftItem:
                 newHCISemiCore.InputOrDropdown(false);
-                // Set content type for aircraft item
+                FillDropdown(newHCISemiCore.ConsoleDropdown, aircraftCores);
+                break;
+            case HigherConsoleItem.ItemType.situationItem:
+                newHCISemiCore.InputOrDropdown(false);
+                FillDropdown(newHCISemiCore.ConsoleDropdown, situationCores);
+                break;
+            case HigherConsoleItem.ItemType.enemyItem:
+                newHCISemiCore.InputOrDropdown(false);
+                FillDropdown(newHCISemiCore.ConsoleDropdown, enemyCores);
                 break;
             default:
                 break;
@@ -209,13 +275,29 @@ public class MasterController : MonoBehaviour
     #region Running execution
     private void ExecutionRun()
     {
-        ReadSettings();
         emptyCamera.gameObject.SetActive(false);
-        consoleCanvas.gameObject.SetActive(false);
+        higherConsole.gameObject.SetActive(false);
+        mediumConsole.gameObject.SetActive(false);
         lowerConsoleIsWorking = true;
+        unitsRoot.SetActive(true);
 
-        Instantiate(currentPlayer, playerSpawnLocation);
-        Instantiate(enemyPrefab, enemySpawnLocation);
+        playerSpawned = Instantiate(currentPlayer, playerSpawnLocation);
+        enemySpawnedList.Add(Instantiate(enemyPrefab, enemySpawnLocation));
+
+        //This needs to be after spawning
+        ReadSettings();
+
+        LowerConsoleUpdate($"Session has started successfully. Current Phase - {CurrentGamePhase}\nPress N for Intermission. Press J for Enemy Spawn.", LowerConsoleTaskType.StayDefault);
+    }
+    private void SetSettings<T>(T what, ref T where)
+    {
+        //We can later stop absurd ranges through this method.
+
+        if (EqualityComparer<T>.Default.Equals(what, default(T))) // check if 'what' is empty or not
+        {
+            return;
+        }
+        where = what;
     }
 
     private void ReadSettings()
@@ -224,24 +306,77 @@ public class MasterController : MonoBehaviour
         {
             if(HCI.ConsoleItemName == HigherConsoleItem.ItemName.maxEnemySpawn)
             {
-                maxEnemyCount = int.Parse(HCI.HCISemiCore.ConsoleInputField.text);
+                if (int.TryParse(HCI.HCISemiCore.ConsoleInputField.text, out int a)) // parse input as int
+                {
+                    SetSettings(a, ref maxEnemyCount); // assign parsed value to 'maxEnemyCount'
+                }
             }
             else if(HCI.ConsoleItemName == HigherConsoleItem.ItemName.playerSpeedMultiplier)
             {
-                var a = int.Parse(HCI.HCISemiCore.ConsoleInputField.text);
-                //Do Something
+                if (float.TryParse(HCI.HCISemiCore.ConsoleInputField.text, out float a)) // parse input as int
+                {
+                    SetSettings(a, ref playerSpeedMultiplier); // assign parsed value to 'playerSpeedMultiplier'
+                }
             }
-            else if(HCI.ConsoleItemName == HigherConsoleItem.ItemName.enemyAircraft)
+            else if(HCI.ConsoleItemName == HigherConsoleItem.ItemName.enemyAircraftCore)
             {
-                var a = HCI.HCISemiCore.ConsoleDropdown.value;
-                //Do Something
+                int selectedOptionIndex = HCI.HCISemiCore.ConsoleDropdown.value;
+                AircraftCore selectedAircraftCore = aircraftCores[selectedOptionIndex];
+                foreach (GameObject enemySpawned in enemySpawnedList)
+                {
+                    enemySpawned.GetComponent<EnemyController>().CoreUpdate(selectedAircraftCore);
+                }
             }
-            else if (HCI.ConsoleItemName == HigherConsoleItem.ItemName.playerAircraft)
+            else if (HCI.ConsoleItemName == HigherConsoleItem.ItemName.enemySituationCore)
             {
-                var a = HCI.HCISemiCore.ConsoleDropdown.value;
-                //Do Something
+                int selectedOptionIndex = HCI.HCISemiCore.ConsoleDropdown.value;
+                SituationCore selectedSituationCore = situationCores[selectedOptionIndex];
+                foreach (GameObject enemySpawned in enemySpawnedList)
+                {
+                    enemySpawned.GetComponent<EnemyController>().CoreUpdate(selectedSituationCore);
+                }
+            }
+            else if (HCI.ConsoleItemName == HigherConsoleItem.ItemName.enemyEnemyCore)
+            {
+                int selectedOptionIndex = HCI.HCISemiCore.ConsoleDropdown.value;
+                EnemyCore selectedEnemyCore = enemyCores[selectedOptionIndex];
+                foreach(GameObject enemySpawned in enemySpawnedList)
+                {
+                    enemySpawned.GetComponent<EnemyController>().CoreUpdate(selectedEnemyCore);
+                }
+            }
+            else if (HCI.ConsoleItemName == HigherConsoleItem.ItemName.playerAircraftCore)
+            {
+                int selectedOptionIndex = HCI.HCISemiCore.ConsoleDropdown.value;
+                AircraftCore selectedAircraftCore = aircraftCores[selectedOptionIndex];
+                playerSpawned.GetComponent<PlayerController>().CoreUpdate(selectedAircraftCore);
             }
         }
+    }
+    #endregion
+
+    #region Running intermission
+    private void IntermissionRun()
+    {
+        higherConsole.gameObject.SetActive(false);
+        mediumConsole.gameObject.SetActive(true);
+        lowerConsoleIsWorking = true;
+
+        Time.timeScale = 0;
+        LowerConsoleUpdate($"Session has been paused successfully. Current Phase - {CurrentGamePhase}\nPress N for Termination. Press J for Enemy Spawn.", LowerConsoleTaskType.StayDefault);
+    }
+    #endregion
+
+    #region Running termination
+    private void TerminationRun()
+    {
+        Time.timeScale = 1;
+        mediumConsole.gameObject.SetActive(false);
+        lowerConsoleIsWorking = true;
+        domainRoot.SetActive(false);
+        unitsRoot.SetActive(false);
+        emptyCamera.gameObject.SetActive(true);
+        LowerConsoleUpdate($"Session has been terminated successfully. Current Phase - {CurrentGamePhase}\nPress N for going to Scene - {nextLevel}. Press R for restarting current scene.", LowerConsoleTaskType.StayDefault);
     }
     #endregion
 }

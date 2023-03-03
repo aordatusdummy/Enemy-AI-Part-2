@@ -57,8 +57,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Units\Aircraft\AircraftCollider.cs" />
-    <Compile Include="Assets\Units\Aircraft\AircraftBase.cs" />
-    <Compile Include="Assets\Units\Situation\SituationBase.cs" />
+    <Compile Include="Assets\Units\Aircraft\AircraftCore.cs" />
+    <Compile Include="Assets\Units\Situation\SituationCore.cs" />
     <Compile Include="Assets\Units\Enemy\EnemyBrain.cs" />
     <Compile Include="Assets\Domain\Aicrafts\Older\SimpleAirPlaneController.cs" />
     <Compile Include="Assets\Domain\Aicrafts\Older\SimpleAirPlaneCollider.cs" />
@@ -68,7 +68,7 @@
     <Compile Include="Assets\Units\Enemy\EnemyController.cs" />
     <Compile Include="Assets\Units\Aircraft\AircraftCamera.cs" />
     <Compile Include="Assets\Units\Player\PlayerController.cs" />
-    <Compile Include="Assets\Units\Enemy\EnemyBase.cs" />
+    <Compile Include="Assets\Units\Enemy\EnemyCore.cs" />
     <Compile Include="Assets\Controller\HigherConsoleItemSemiCore.cs" />
   </ItemGroup>
   <ItemGroup>

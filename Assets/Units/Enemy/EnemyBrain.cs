@@ -5,11 +5,11 @@ using UnityEngine;
 public class EnemyBrain : MonoBehaviour
 {
     #region Base Data
-    private EnemyBase eBase;
-    private SituationBase sBase;
-    private AircraftBase aBase;
+    private EnemyCore eBase;
+    private SituationCore sBase;
+    private AircraftCore aBase;
 
-    public void Init(SituationBase sb, EnemyBase eb, AircraftBase ab)
+    public void Init(SituationCore sb, EnemyCore eb, AircraftCore ab)
     {
         eBase = eb;
         sBase = sb;
@@ -18,7 +18,6 @@ public class EnemyBrain : MonoBehaviour
         FixingBaseData();
         GenerateWayPoints();
 
-        print(eBase.BehaviorAltitudePreference.StatGet);
     }
 
     private void FixingBaseData()
