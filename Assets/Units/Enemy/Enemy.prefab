@@ -467,8 +467,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3518471207451471292}
   - component: {fileID: 6308161493513151235}
+  - component: {fileID: 4999717947161122569}
   m_Layer: 0
-  m_Name: EnemyTestCamera
+  m_Name: Camera System
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -512,7 +513,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
+  far clip plane: 15000
   field of view: 118.9
   orthographic: 0
   orthographic size: 5
@@ -531,6 +532,14 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!81 &4999717947161122569
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6561967243445825119}
+  m_Enabled: 1
 --- !u!1 &7939726606537258685
 GameObject:
   m_ObjectHideFlags: 0
@@ -810,6 +819,7 @@ MonoBehaviour:
   turbineLights:
   - {fileID: 6902132473888275291}
   crashCollidersRoot: {fileID: 7455761780456835589}
+  cameraRoot: {fileID: 3518471207451471292}
   AircraftCore: {fileID: 0}
   SituationCore: {fileID: 0}
   EnemyCore: {fileID: 0}

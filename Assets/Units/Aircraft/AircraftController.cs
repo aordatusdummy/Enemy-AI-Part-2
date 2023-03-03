@@ -29,8 +29,13 @@ public class AircraftController : MonoBehaviour
 
     [SerializeField] protected Transform crashCollidersRoot;
 
+    [SerializeField] Transform cameraRoot;
+
     [SerializeField] protected AircraftCore AircraftCore;
     #endregion
+
+    public Transform CameraRoot { get { return cameraRoot; } }
+
 
     #region Audio
     protected void AudioSystem()

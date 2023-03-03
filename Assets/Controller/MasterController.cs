@@ -88,6 +88,8 @@ public class MasterController : MonoBehaviour
 
     //Helpers
     public GamePhase CurrentGamePhase { get; set; }
+    private int currentViewpointIndex;
+    private Transform currentActiveCameraRoot;
     #endregion
 
     #region Spawning units setup
@@ -121,10 +123,25 @@ public class MasterController : MonoBehaviour
     }
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            if (CurrentGamePhase == GamePhase.Termination) { SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); }
+        }
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            if (CurrentGamePhase == GamePhase.Intermission) { CurrentGamePhase = GamePhase.Execution; }
+            ExecutionContinue();
+        }
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            if (CurrentGamePhase == GamePhase.Execution && currentEnemyCount < maxEnemyCount) { enemySpawnedList.Add(Instantiate(enemyPrefab, enemySpawnLocation)); currentEnemyCount += 1; } //ADDING ENEMY SHOULD BE A FUNCTION BECAUSE IT'S COMING FROM TWO PLACES
+            if (CurrentGamePhase == GamePhase.Intermission) { SwitchViewPoint(); }
+        }
         PhaseCheck();
     }
     private void PhaseCheck() //Press N and go to the next data
     {
+        //THIS IS WRONG... YOU SHOULD CALL THE PHASE FUNCTION DIRECTLY AND THEN CHANGE THE PHASE INSIDE THAT FUNCTION... SO THAT WHEN THOSE FUNCTIONS ARE CALLED EXTERNALLY PHASE ARE CHANGED WITH THE WORK IN FUNCTION
         if (Input.GetKeyDown(KeyCode.N))
         {
             switch (CurrentGamePhase)
@@ -144,10 +161,7 @@ public class MasterController : MonoBehaviour
             }
             PhaseRun();
         }
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            if(CurrentGamePhase == GamePhase.Termination) { SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); }
-        }
+
     }
     private void PhaseRun() //Checking which phase to run by reading current Game Phase
     {
@@ -275,6 +289,9 @@ public class MasterController : MonoBehaviour
     #region Running execution
     private void ExecutionRun()
     {
+        currentViewpointIndex = 0;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
         emptyCamera.gameObject.SetActive(false);
         higherConsole.gameObject.SetActive(false);
         mediumConsole.gameObject.SetActive(false);
@@ -282,13 +299,26 @@ public class MasterController : MonoBehaviour
         unitsRoot.SetActive(true);
 
         playerSpawned = Instantiate(currentPlayer, playerSpawnLocation);
+        currentActiveCameraRoot = playerSpawned.GetComponent<PlayerController>().CameraRoot;
         enemySpawnedList.Add(Instantiate(enemyPrefab, enemySpawnLocation));
-
+        currentEnemyCount += 1;
         //This needs to be after spawning
         ReadSettings();
 
         LowerConsoleUpdate($"Session has started successfully. Current Phase - {CurrentGamePhase}\nPress N for Intermission. Press J for Enemy Spawn.", LowerConsoleTaskType.StayDefault);
+
+        enemyPrefab.GetComponent<EnemyController>().CoreUpdateCopy(enemySpawnedList[0].GetComponent<EnemyController>());
     }
+
+    private void ExecutionContinue()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        Time.timeScale = 1;
+        mediumConsole.gameObject.SetActive(false);
+        LowerConsoleUpdate($"Session has started successfully. Current Phase - {CurrentGamePhase}\nPress N for Intermission. Press J for Enemy Spawn.", LowerConsoleTaskType.StayDefault);
+    }
+
     private void SetSettings<T>(T what, ref T where)
     {
         //We can later stop absurd ranges through this method.
@@ -358,18 +388,47 @@ public class MasterController : MonoBehaviour
     #region Running intermission
     private void IntermissionRun()
     {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
         higherConsole.gameObject.SetActive(false);
         mediumConsole.gameObject.SetActive(true);
         lowerConsoleIsWorking = true;
 
         Time.timeScale = 0;
-        LowerConsoleUpdate($"Session has been paused successfully. Current Phase - {CurrentGamePhase}\nPress N for Termination. Press J for Enemy Spawn.", LowerConsoleTaskType.StayDefault);
+        LowerConsoleUpdate($"Session has been paused successfully. Current Phase - {CurrentGamePhase}\nPress N for Termination. Press M for continuing Execution. Press J for switching viewpoint.", LowerConsoleTaskType.StayDefault);
+    }
+
+    public void SwitchViewPoint()
+    {
+        currentViewpointIndex += 1;
+        if(currentViewpointIndex > enemySpawnedList.Count) //Player + Enemy Count... Index starts from 0 so...if Index is equal to enemySpawnedList Count... it means that index is on the last enemy...
+        {
+            currentViewpointIndex = 0;
+        }
+
+        if(currentActiveCameraRoot != null) { currentActiveCameraRoot.gameObject.SetActive(false); }
+
+        if(currentViewpointIndex == 0)
+        {
+            currentActiveCameraRoot = playerSpawned.GetComponent<PlayerController>().CameraRoot;
+        }
+
+        else
+        {
+            currentActiveCameraRoot = enemySpawnedList[currentViewpointIndex - 1].GetComponent<EnemyController>().CameraRoot;
+        }
+
+        currentActiveCameraRoot.gameObject.SetActive(true);
+        //When currentViewpointIndex is 0 the player Camera will be active... when 
     }
     #endregion
 
     #region Running termination
     private void TerminationRun()
     {
+        //EVERYTHIG HERE IS REPETITIVE... JUST CREATE A PAUSE FUNCTION... WHICH CHANGES CURSOR AND TIME... AND IT JUST NEEDS TO BE CALLED ON EXECUTION AND ON INTERMISSION
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
         Time.timeScale = 1;
         mediumConsole.gameObject.SetActive(false);
         lowerConsoleIsWorking = true;

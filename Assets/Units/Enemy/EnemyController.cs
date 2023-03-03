@@ -111,6 +111,7 @@ public class EnemyController : AircraftController
 
     private void CheckObstacle()
     {
+        if (crashColliders == null) { SetupColliders(crashCollidersRoot); }
         foreach (var crashCollider in crashColliders)
         {
             Collider[] colliders = Physics.OverlapSphere(crashCollider.transform.position, crashCollider.bounds.size.magnitude);
@@ -180,6 +181,14 @@ public class EnemyController : AircraftController
 
     }
     #endregion
+
+    public void CoreUpdateCopy(EnemyController copyWhat)
+    {
+        CoreUpdate(copyWhat.EnemyCore);
+        CoreUpdate(copyWhat.SituationCore);
+        CoreUpdate(copyWhat.AircraftCore);
+        
+    }
 
     public void CoreUpdate(AircraftCore newAircraftCore)
     {

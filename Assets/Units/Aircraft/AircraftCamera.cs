@@ -12,13 +12,6 @@ public class AircraftCamera : MonoBehaviour
     [SerializeField] private float cameraDefaultFov = 60f;
     [SerializeField] private float cameraTurboFov = 40f;
 
-    private void Start()
-    {
-        //Lock and hide mouse
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-    }
-
     private void Update()
     {
         CameraFovUpdate();

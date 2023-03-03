@@ -24,7 +24,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 634753479247735331}
-  m_LocalRotation: {x: -0.000000026077032, y: 0.000000056730862, z: -0.000000014379958, w: 1}
+  m_LocalRotation: {x: -0.000000033527613, y: -0.00000004711957, z: 0.000000011727736, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -98,7 +98,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 634753479554623176}
-  m_LocalRotation: {x: -0.018189494, y: 0.000000012240738, z: -0.000000002711582, w: 0.9998346}
+  m_LocalRotation: {x: -0.018189508, y: -0.00000007711756, z: 7.770221e-10, w: 0.9998346}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -338,7 +338,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 634753480257720802}
-  m_LocalRotation: {x: -0.036324956, y: 0.000000012215313, z: -0.000000004891757, w: 0.99934006}
+  m_LocalRotation: {x: -0.036324978, y: -0.000000047379473, z: -0.0000000038075796, w: 0.9993401}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -930,8 +930,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4039950870105723347}
-  m_LocalRotation: {x: 0.08680304, y: -0.19010472, z: 0.01687678, w: 0.9777733}
-  m_LocalPosition: {x: 4.7360625, y: 4.239998, z: -11.719186}
+  m_LocalRotation: {x: 0.08129115, y: 0.39204618, z: -0.034804385, w: 0.91568565}
+  m_LocalPosition: {x: -9.146818, y: 4.239998, z: -8.723838}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 634753480223355256}
@@ -1750,4 +1750,5 @@ MonoBehaviour:
   turbineLights:
   - {fileID: 6416146220093198234}
   crashCollidersRoot: {fileID: 7042461869826834116}
+  cameraRoot: {fileID: 4039950870105723350}
   AircraftCore: {fileID: 0}
