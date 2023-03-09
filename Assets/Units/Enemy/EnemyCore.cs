@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "EnemyName", menuName = "ScriptableObjects/Enemy", order = 1)]
@@ -67,36 +66,6 @@ public class EnemyCore : ScriptableObject
     public MasterAttribute BehaviorSpeedPreference { get { return behaviorSpeedPreference; } set { behaviorSpeedPreference = value; } }
     public MasterAttribute BehaviorAltitudePreference { get { return behaviorAltitudePreference; } set { behaviorAltitudePreference = value; } }
     #endregion
-
-    #region Randomize
-    public static EnemyCore CreateRandomEnemyCore()
-    {
-        EnemyCore EnemyCore = CreateInstance<EnemyCore>();
-
-        PropertyInfo[] properties = typeof(EnemyCore).GetProperties();
-        foreach (PropertyInfo property in properties)
-        {
-            if (property.CanWrite)
-            {
-                if (property.PropertyType == typeof(MasterAttribute))
-                {
-                    MasterAttribute ma = new MasterAttribute();
-                    ma.StatBase = Random.Range(0f, 100f);
-                    ma.StatCons = Random.Range(0f, 1f);
-                    ma.StatMarg = Random.Range(0f, 1f);
-                    property.SetValue(EnemyCore, ma);
-
-                }
-                else if (property.PropertyType == typeof(bool))
-                {
-                    property.SetValue(EnemyCore, Random.value > 0.5f);
-                }
-                // Add more property types if necessary
-            }
-        }
-        return EnemyCore;
-    }
-    #endregion
 }
 
 #region Base
@@ -126,6 +95,12 @@ public class MasterAttribute
             //Use all three and get the stat random
             return statBase;
         }
+    }
+
+    //While Reading Core
+    public override string ToString()
+    {
+        return $"(StatBase={StatBase}, StatCons={StatCons}, StatMarg={StatMarg})";
     }
 }
 #endregion

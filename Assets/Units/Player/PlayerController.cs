@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class PlayerController : AircraftController
 {
-    #region Base
+    #region Basic
     private void Start()
     {
         //Setup speeds
-        maxSpeed = AircraftCore.DefaultSpeed;
-        currentSpeed = AircraftCore.DefaultSpeed;
+        maxSpeed = myAircraftCore.DefaultSpeed;
+        currentSpeed = myAircraftCore.DefaultSpeed;
 
         //Get and set rigidbody
         rb = GetComponent<Rigidbody>();
@@ -53,6 +53,11 @@ public class PlayerController : AircraftController
             Crash();
         }
     }
+
+    public void CoreUpdate(AircraftCore newAircraftCore)
+    {
+        myAircraftCore = newAircraftCore;
+    }
     #endregion
 
     #region Movement
@@ -83,56 +88,53 @@ public class PlayerController : AircraftController
         //Accelerate and deacclerate
         if (currentSpeed < maxSpeed)
         {
-            currentSpeed += AircraftCore.Accelerating * Time.deltaTime;
+            currentSpeed += myAircraftCore.Accelerating * Time.deltaTime;
         }
         else
         {
-            currentSpeed -= AircraftCore.Deaccelerating * Time.deltaTime;
+            currentSpeed -= myAircraftCore.Deaccelerating * Time.deltaTime;
         }
 
         //Turbo
         if (Input.GetKey(KeyCode.LeftShift))
         {
             //Set speed to turbo speed and rotation to turbo values
-            maxSpeed = AircraftCore.TurboSpeed;
+            maxSpeed = myAircraftCore.TurboSpeed;
 
-            currentYawSpeed = AircraftCore.YawSpeed * AircraftCore.YawTurboMultiplier;
-            currentPitchSpeed = AircraftCore.PitchSpeed * AircraftCore.PitchTurboMultiplier;
-            currentRollSpeed = AircraftCore.RollSpeed * AircraftCore.RollTurboMultiplier;
+            currentYawSpeed = myAircraftCore.YawSpeed * myAircraftCore.YawTurboMultiplier;
+            currentPitchSpeed = myAircraftCore.PitchSpeed * myAircraftCore.PitchTurboMultiplier;
+            currentRollSpeed = myAircraftCore.RollSpeed * myAircraftCore.RollTurboMultiplier;
 
             //Engine lights
-            currentEngineLightIntensity = AircraftCore.TurbineLightTurbo;
+            currentEngineLightIntensity = myAircraftCore.TurbineLightTurbo;
 
             //Effects
-            ChangeWingTrailEffectThickness(AircraftCore.TrailThickness);
+            ChangeWingTrailEffectThickness(myAircraftCore.TrailThickness);
 
             //Audio
-            currentEngineSoundPitch = AircraftCore.TurboSoundPitch;
+            currentEngineSoundPitch = myAircraftCore.TurboSoundPitch;
         }
         else
         {
             //Speed and rotation normal
-            maxSpeed = AircraftCore.DefaultSpeed;
+            maxSpeed = myAircraftCore.DefaultSpeed;
 
-            currentYawSpeed = AircraftCore.YawSpeed;
-            currentPitchSpeed = AircraftCore.PitchSpeed;
-            currentRollSpeed = AircraftCore.RollSpeed;
+            currentYawSpeed = myAircraftCore.YawSpeed;
+            currentPitchSpeed = myAircraftCore.PitchSpeed;
+            currentRollSpeed = myAircraftCore.RollSpeed;
 
             //Engine lights
-            currentEngineLightIntensity = AircraftCore.TurbineLightDefault;
+            currentEngineLightIntensity = myAircraftCore.TurbineLightDefault;
 
             //Effects
             ChangeWingTrailEffectThickness(0f);
 
             //Audio
-            currentEngineSoundPitch = AircraftCore.DefaultSoundPitch;
+            currentEngineSoundPitch = myAircraftCore.DefaultSoundPitch;
         }
 
     }
     #endregion
 
-    public void CoreUpdate(AircraftCore newAircraftCore)
-    {
-        AircraftCore = newAircraftCore;
-    }
+
 }

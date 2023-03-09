@@ -770,8 +770,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8467017935842857298}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: -117.9, y: 25, z: -116.3}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8623803477535184614}
@@ -782,7 +782,7 @@ Transform:
   - {fileID: 3518471207451471292}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &5224293234645467637
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -820,9 +820,9 @@ MonoBehaviour:
   - {fileID: 6902132473888275291}
   crashCollidersRoot: {fileID: 7455761780456835589}
   cameraRoot: {fileID: 3518471207451471292}
-  AircraftCore: {fileID: 0}
-  SituationCore: {fileID: 0}
-  EnemyCore: {fileID: 0}
+  AircraftCore: {fileID: 11400000, guid: 80c9c378ecc9e7b42abe588739ed03d7, type: 2}
+  SituationCore: {fileID: 11400000, guid: bf36b8349e5943643b891881504beb4b, type: 2}
+  EnemyCore: {fileID: 11400000, guid: 8b89aef9446b055499d381f0646cb392, type: 2}
   sphereRadius: 5
 --- !u!114 &448806946979266781
 MonoBehaviour:

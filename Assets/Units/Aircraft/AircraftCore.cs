@@ -5,7 +5,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Aircraft", menuName = "ScriptableObjects/Aircraft", order = 0)]
 public class AircraftCore : ScriptableObject
 {
-    #region Controller
     #region Variables to be assigned
     [Header("Wing trail effects")] 
     [Range(0.01f, 1f)] [SerializeField] private float trailThickness = 0.045f;
@@ -65,7 +64,6 @@ public class AircraftCore : ScriptableObject
     public float TurbineLightDefault { get { return turbineLightDefault; } }
     public float TurbineLightTurbo { get { return turbineLightTurbo; } }
     #endregion
-    #endregion
 
     #region Values to be assigned
     [SerializeField] private float maxSafeAltitude;
@@ -73,7 +71,7 @@ public class AircraftCore : ScriptableObject
 
     #endregion
 
-    #region Values to be accesseds
+    #region Values to be accessed
     public float MaxSafeAltitude { get { return maxSafeAltitude; } }
     public float SearchDistance { get { return searchDistance; } }
 

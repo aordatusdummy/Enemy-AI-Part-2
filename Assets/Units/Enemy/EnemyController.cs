@@ -9,8 +9,8 @@ public class EnemyController : AircraftController
     private void Start()
     {
         //Setup speeds
-        maxSpeed = AircraftCore.DefaultSpeed;
-        currentSpeed = AircraftCore.DefaultSpeed;
+        maxSpeed = myAircraftCore.DefaultSpeed;
+        currentSpeed = myAircraftCore.DefaultSpeed;
 
         //Get and set rigidbody
         rb = GetComponent<Rigidbody>();
@@ -24,8 +24,11 @@ public class EnemyController : AircraftController
 
     public void Init()
     {
-        EnemyCore randomEnemyCore = EnemyCore.CreateRandomEnemyCore();
-        this.EnemyCore = randomEnemyCore;
+        if (myEnemyCore == null || myEnemyCore.name == "Empty")
+        {
+            int coreSequenceOrder = CoreSequence.CreateRandomEnemyCore();
+            myEnemyCore = CoreSequence.randomEnemyCores[coreSequenceOrder];
+        }
     }
 
     private void Update()
@@ -61,11 +64,37 @@ public class EnemyController : AircraftController
             Crash();
         }
     }
+
+    public void CoreUpdateCopy(EnemyController copyWhat)
+    {
+        return;
+        CoreUpdate(copyWhat.myEnemyCore);
+        CoreUpdate(copyWhat.mySituationCore);
+        CoreUpdate(copyWhat.myAircraftCore);
+
+    }
+
+    public void CoreUpdate(AircraftCore newAircraftCore)
+    {
+        myAircraftCore = newAircraftCore;
+    }
+
+    public void CoreUpdate(EnemyCore newEnemyCore)
+    {
+        myEnemyCore = newEnemyCore;
+    }
+
+    public void CoreUpdate(SituationCore newSituationCore)
+    {
+        mySituationCore = newSituationCore;
+    }
     #endregion
 
     #region Movement
-    [SerializeField] SituationCore SituationCore;
-    [SerializeField] EnemyCore EnemyCore;
+    [SerializeField] SituationCore mySituationCore;
+    [SerializeField] EnemyCore myEnemyCore;
+    public SituationCore MySituationCore { get { return MySituationCore; } }
+    public EnemyCore MyEnemyCore { get { return myEnemyCore; } }
     private EnemyBrain enemyBrain;
     private int currentWaypointIndex = 0;
     public float sphereRadius = 2.0f; // Add this line
@@ -73,7 +102,7 @@ public class EnemyController : AircraftController
     private void StartMovement()
     {
         enemyBrain = this.GetComponent<EnemyBrain>();
-        enemyBrain.Init(SituationCore, EnemyCore, AircraftCore);
+        enemyBrain.Init(mySituationCore, myEnemyCore, myAircraftCore);
     }
 
     private void SimpleMovement()
@@ -134,74 +163,52 @@ public class EnemyController : AircraftController
         //Accelerate and deacclerate
         if (currentSpeed < maxSpeed)
         {
-            currentSpeed += AircraftCore.Accelerating * Time.deltaTime;
+            currentSpeed += myAircraftCore.Accelerating * Time.deltaTime;
         }
         else
         {
-            currentSpeed -= AircraftCore.Deaccelerating * Time.deltaTime;
+            currentSpeed -= myAircraftCore.Deaccelerating * Time.deltaTime;
         }
 
         //Turbo
         if (isTurbo)
         {
             //Set speed to turbo speed and rotation to turbo values
-            maxSpeed = AircraftCore.TurboSpeed;
+            maxSpeed = myAircraftCore.TurboSpeed;
 
-            currentYawSpeed = AircraftCore.YawSpeed * AircraftCore.YawTurboMultiplier;
-            currentPitchSpeed = AircraftCore.PitchSpeed * AircraftCore.PitchTurboMultiplier;
-            currentRollSpeed = AircraftCore.RollSpeed * AircraftCore.RollTurboMultiplier;
+            currentYawSpeed = myAircraftCore.YawSpeed * myAircraftCore.YawTurboMultiplier;
+            currentPitchSpeed = myAircraftCore.PitchSpeed * myAircraftCore.PitchTurboMultiplier;
+            currentRollSpeed = myAircraftCore.RollSpeed * myAircraftCore.RollTurboMultiplier;
 
             //Engine lights
-            currentEngineLightIntensity = AircraftCore.TurbineLightTurbo;
+            currentEngineLightIntensity = myAircraftCore.TurbineLightTurbo;
 
             //Effects
-            ChangeWingTrailEffectThickness(AircraftCore.TrailThickness);
+            ChangeWingTrailEffectThickness(myAircraftCore.TrailThickness);
 
             //Audio
-            currentEngineSoundPitch = AircraftCore.TurboSoundPitch;
+            currentEngineSoundPitch = myAircraftCore.TurboSoundPitch;
         }
         else
         {
             //Speed and rotation normal
-            maxSpeed = AircraftCore.DefaultSpeed;
+            maxSpeed = myAircraftCore.DefaultSpeed;
 
-            currentYawSpeed = AircraftCore.YawSpeed;
-            currentPitchSpeed = AircraftCore.PitchSpeed;
-            currentRollSpeed = AircraftCore.RollSpeed;
+            currentYawSpeed = myAircraftCore.YawSpeed;
+            currentPitchSpeed = myAircraftCore.PitchSpeed;
+            currentRollSpeed = myAircraftCore.RollSpeed;
 
             //Engine lights
-            currentEngineLightIntensity = AircraftCore.TurbineLightDefault;
+            currentEngineLightIntensity = myAircraftCore.TurbineLightDefault;
 
             //Effects
             ChangeWingTrailEffectThickness(0f);
 
             //Audio
-            currentEngineSoundPitch = AircraftCore.DefaultSoundPitch;
+            currentEngineSoundPitch = myAircraftCore.DefaultSoundPitch;
         }
 
     }
     #endregion
 
-    public void CoreUpdateCopy(EnemyController copyWhat)
-    {
-        CoreUpdate(copyWhat.EnemyCore);
-        CoreUpdate(copyWhat.SituationCore);
-        CoreUpdate(copyWhat.AircraftCore);
-        
-    }
-
-    public void CoreUpdate(AircraftCore newAircraftCore)
-    {
-        AircraftCore = newAircraftCore;
-    }
-
-    public void CoreUpdate(EnemyCore newEnemyCore)
-    {
-        EnemyCore = newEnemyCore;
-    }
-
-    public void CoreUpdate(SituationCore newSituationCore)
-    {
-        SituationCore = newSituationCore;
-    }
 }
