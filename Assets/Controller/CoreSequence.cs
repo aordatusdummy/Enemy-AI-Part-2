@@ -35,7 +35,7 @@ public class CoreSequence : ScriptableObject
             }
         }
 
-        randomEnemyCores.Add(EnemyCore);
+        randomEnemyCores.Add(EnemyCore);    
         return randomEnemyCores.Count-1;
     }
     #endregion

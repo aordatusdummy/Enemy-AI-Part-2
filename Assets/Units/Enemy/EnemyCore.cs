@@ -100,7 +100,7 @@ public class MasterAttribute
     //While Reading Core
     public override string ToString()
     {
-        return $"(StatBase={StatBase}, StatCons={StatCons}, StatMarg={StatMarg})";
+        return $"({StatBase}, {StatCons}, {StatMarg}";
     }
 }
 #endregion

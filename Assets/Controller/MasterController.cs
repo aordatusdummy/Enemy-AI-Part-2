@@ -127,6 +127,11 @@ public class MasterController : MonoBehaviour
     private bool allowEnemySpawn = true; //Indicates if enemy spawning is allowed
     private List<GameObject> enemySpawnedList = new List<GameObject>(); //The list of spawned enemy objects
     private GameObject playerSpawned; //The player object that has been spawned
+
+    private AircraftCore selectedAircraftCore;
+    private SituationCore selectedSituationCore;
+    private EnemyCore selectedEnemyCore;
+
     #endregion
 
     #region Basic
@@ -425,11 +430,11 @@ public class MasterController : MonoBehaviour
         // Get current active camera root
         currentActiveCameraRoot = playerSpawned.GetComponent<PlayerController>().CameraRoot;
 
-        // Spawn enemy
-        SpawnEnemy(enemyPrefab, enemySpawnLocation, false);
- 
         // Read settings after spawning
         ReadSettings();
+
+        // Spawn enemy
+        SpawnEnemy(enemyPrefab, enemySpawnLocation, false);
 
         // Update lower console with session start message
         LowerConsoleUpdate($"Session has started successfully. Current Phase - {CurrentGamePhase}\nPress N for Intermission. Press J for Enemy Spawn {currentEnemyCount}/{maxEnemyCount}.", LowerConsoleTaskType.StayDefault);
@@ -441,8 +446,7 @@ public class MasterController : MonoBehaviour
 
         // Add spawned enemy to the list and increase enemy count
         GameObject newEnemy = Instantiate(enemy, where);
-        enemy.GetComponent<EnemyController>().Init();
-        enemy.GetComponent<EnemyController>().Init();
+        enemy.GetComponent<EnemyController>().Init(selectedAircraftCore, selectedSituationCore, selectedEnemyCore);
         enemySpawnedList.Add(newEnemy);
         currentEnemyCount += 1;
 
@@ -505,13 +509,8 @@ public class MasterController : MonoBehaviour
 
                 // Get the selected aircraft core from the 'aircraftCores' list using the selected option index.
                 AircraftCore selectedAircraftCore = aircraftCores[selectedOptionIndex];
+                this.selectedAircraftCore = selectedAircraftCore;
 
-                // Loop through all the enemy game objects that have been spawned.
-                foreach (GameObject enemySpawned in enemySpawnedList)
-                {
-                    // Update the enemy controller's aircraft core with the selected aircraft core.
-                    enemySpawned.GetComponent<EnemyController>().CoreUpdate(selectedAircraftCore);
-                }
             }
             // If the Higher Console item is for the enemy situation core setting:
             else if (HCI.ConsoleItemName == HigherConsoleItem.ItemName.enemySituationCore)
@@ -521,13 +520,7 @@ public class MasterController : MonoBehaviour
 
                 // Get the selected situation core from the 'situationCores' list using the selected option index.
                 SituationCore selectedSituationCore = situationCores[selectedOptionIndex];
-
-                // Loop through all the enemy game objects that have been spawned.
-                foreach (GameObject enemySpawned in enemySpawnedList)
-                {
-                    // Update the enemy controller's situation core with the selected situation core.
-                    enemySpawned.GetComponent<EnemyController>().CoreUpdate(selectedSituationCore);
-                }
+                this.selectedSituationCore = selectedSituationCore;
             }
             // If the Higher Console item is for the enemy enemy core setting:
             else if (HCI.ConsoleItemName == HigherConsoleItem.ItemName.enemyEnemyCore)
@@ -538,12 +531,8 @@ public class MasterController : MonoBehaviour
                 // Get the selected enemy core from the 'enemyCores' list using the selected option index.
                 EnemyCore selectedEnemyCore = enemyCores[selectedOptionIndex];
 
-                // Loop through all the enemy game objects that have been spawned.
-                foreach (GameObject enemySpawned in enemySpawnedList)
-                {
-                    // Update the enemy controller's enemy core with the selected enemy core.
-                    enemySpawned.GetComponent<EnemyController>().CoreUpdate(selectedEnemyCore);
-                }
+                this.selectedEnemyCore = selectedEnemyCore;
+
             }
             // if the console item is for player aircraft core
             else if (HCI.ConsoleItemName == HigherConsoleItem.ItemName.playerAircraftCore)
@@ -665,7 +654,7 @@ public class MasterController : MonoBehaviour
     {
         CurrentGamePhase = GamePhase.Termination;
 
-        PhaseRunnerhelper2(false);
+        PhaseRunnerhelper2(false); 
 
         // Disable the medium console game object as viewpoint data analyisis feature is not required in termination
         mediumConsole.gameObject.SetActive(false);

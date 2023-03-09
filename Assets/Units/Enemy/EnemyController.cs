@@ -22,13 +22,17 @@ public class EnemyController : AircraftController
         StartMovement();
     }
 
-    public void Init()
+    public void Init(AircraftCore mAC, SituationCore mSC, EnemyCore mEC)
     {
+        myAircraftCore = mAC;
+        mySituationCore = mSC;
+        myEnemyCore = mEC;
+        /*
         if (myEnemyCore == null || myEnemyCore.name == "Empty")
         {
             int coreSequenceOrder = CoreSequence.CreateRandomEnemyCore();
             myEnemyCore = CoreSequence.randomEnemyCores[coreSequenceOrder];
-        }
+        }*/
     }
 
     private void Update()
@@ -67,7 +71,6 @@ public class EnemyController : AircraftController
 
     public void CoreUpdateCopy(EnemyController copyWhat)
     {
-        return;
         CoreUpdate(copyWhat.myEnemyCore);
         CoreUpdate(copyWhat.mySituationCore);
         CoreUpdate(copyWhat.myAircraftCore);
