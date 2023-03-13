@@ -665,6 +665,7 @@ MonoBehaviour:
   enemySpawnLocation: {fileID: 1056432924}
   aircraftCores:
   - {fileID: 11400000, guid: 80c9c378ecc9e7b42abe588739ed03d7, type: 2}
+  - {fileID: 11400000, guid: 2c662c1d68858894a92914bb20122aa5, type: 2}
   situationCores:
   - {fileID: 11400000, guid: bf36b8349e5943643b891881504beb4b, type: 2}
   enemyCores:
@@ -1510,7 +1511,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 941536663550984310, guid: 459ddb5b40c09e7429c51ff48333c1bc, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -2255
+      value: -2400
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 459ddb5b40c09e7429c51ff48333c1bc, type: 3}

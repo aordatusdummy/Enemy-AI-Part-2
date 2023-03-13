@@ -93,11 +93,11 @@ public class AircraftController : MonoBehaviour
             GameObject _currentObject = colliders[i].gameObject;
 
             //Add airplane collider to the current object and add it to the list
-            AircraftCollider _airplaneCollider = _currentObject.AddComponent<AircraftCollider>();
+            AircraftCollider _airplaneCollider = _currentObject.GetComponent<AircraftCollider>();
             airPlaneColliders.Add(_airplaneCollider);
 
             //Add rigidbody to the current object
-            Rigidbody _rb = _currentObject.AddComponent<Rigidbody>();
+            Rigidbody _rb = _currentObject.GetComponent<Rigidbody>();
             _rb.useGravity = false;
             _rb.isKinematic = true;
             _rb.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;

@@ -16,7 +16,7 @@ MonoBehaviour:
     rangeType: 0
     shapeNucleus: {x: 0, y: 0, z: 0}
     aircraftNucleus: 1
-    st1: 1000
+    st1: 10
     st2: 0
     st3: 0
   objectiveGiven: 0

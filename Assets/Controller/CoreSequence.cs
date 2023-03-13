@@ -25,7 +25,7 @@ public class CoreSequence : ScriptableObject
                     ma.StatCons = Random.Range(0f, 1f);
                     ma.StatMarg = Random.Range(0f, 1f);
                     property.SetValue(EnemyCore, ma);
-                    Debug.Log(ma.StatBase);
+                    //Debug.Log(ma.StatBase);
                 }
                 else if (property.PropertyType == typeof(bool))
                 {
@@ -35,7 +35,7 @@ public class CoreSequence : ScriptableObject
             }
         }
 
-        randomEnemyCores.Add(EnemyCore);    
+        randomEnemyCores.Add(EnemyCore); 
         return randomEnemyCores.Count-1;
     }
     #endregion

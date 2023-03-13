@@ -433,9 +433,6 @@ public class MasterController : MonoBehaviour
         // Read settings after spawning
         ReadSettings();
 
-        // Spawn enemy
-        SpawnEnemy(enemyPrefab, enemySpawnLocation, false);
-
         // Update lower console with session start message
         LowerConsoleUpdate($"Session has started successfully. Current Phase - {CurrentGamePhase}\nPress N for Intermission. Press J for Enemy Spawn {currentEnemyCount}/{maxEnemyCount}.", LowerConsoleTaskType.StayDefault);
     }
@@ -446,7 +443,7 @@ public class MasterController : MonoBehaviour
 
         // Add spawned enemy to the list and increase enemy count
         GameObject newEnemy = Instantiate(enemy, where);
-        enemy.GetComponent<EnemyController>().Init(selectedAircraftCore, selectedSituationCore, selectedEnemyCore);
+        newEnemy.GetComponent<EnemyController>().Init(selectedAircraftCore, selectedSituationCore, selectedEnemyCore);
         enemySpawnedList.Add(newEnemy);
         currentEnemyCount += 1;
 

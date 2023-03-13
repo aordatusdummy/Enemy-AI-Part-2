@@ -71,6 +71,7 @@
     <Compile Include="Assets\Units\Player\PlayerController.cs" />
     <Compile Include="Assets\Units\Enemy\EnemyCore.cs" />
     <Compile Include="Assets\Controller\HigherConsoleItemSemiCore.cs" />
+    <Compile Include="Assets\Scenes\Zero\Shift.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Controller\TMP\Shaders\TMPro.cginc" />

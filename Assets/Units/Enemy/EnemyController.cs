@@ -6,7 +6,9 @@ using UnityEngine;
 public class EnemyController : AircraftController
 {
     #region Base
-    private void Start()
+    private bool isReady = false;
+
+    private void Setup()
     {
         //Setup speeds
         maxSpeed = myAircraftCore.DefaultSpeed;
@@ -19,28 +21,33 @@ public class EnemyController : AircraftController
         rb.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
 
         SetupColliders(crashCollidersRoot);
-        StartMovement();
     }
-
     public void Init(AircraftCore mAC, SituationCore mSC, EnemyCore mEC)
     {
         myAircraftCore = mAC;
         mySituationCore = mSC;
         myEnemyCore = mEC;
-        /*
+        
+        
         if (myEnemyCore == null || myEnemyCore.name == "Empty")
         {
             int coreSequenceOrder = CoreSequence.CreateRandomEnemyCore();
             myEnemyCore = CoreSequence.randomEnemyCores[coreSequenceOrder];
-        }*/
+        }
+        
+        Setup();
+        isReady = true;
+        StartMovement();
     }
 
+    private bool showMe = true;
     private void Update()
     {
-        AudioSystem();
+        //AudioSystem();
 
+       
         //Airplane move only if not dead
-        if (!planeIsDead)
+        if (!planeIsDead && isReady)
         {
             SimpleMovement();
             Dyanmics();
@@ -96,8 +103,9 @@ public class EnemyController : AircraftController
     #region Movement
     [SerializeField] SituationCore mySituationCore;
     [SerializeField] EnemyCore myEnemyCore;
-    public SituationCore MySituationCore { get { return MySituationCore; } }
+    public SituationCore MySituationCore { get { return mySituationCore; } }
     public EnemyCore MyEnemyCore { get { return myEnemyCore; } }
+
     private EnemyBrain enemyBrain;
     private int currentWaypointIndex = 0;
     public float sphereRadius = 2.0f; // Add this line
@@ -143,7 +151,6 @@ public class EnemyController : AircraftController
 
     private void CheckObstacle()
     {
-        if (crashColliders == null) { SetupColliders(crashCollidersRoot); }
         foreach (var crashCollider in crashColliders)
         {
             Collider[] colliders = Physics.OverlapSphere(crashCollider.transform.position, crashCollider.bounds.size.magnitude);
