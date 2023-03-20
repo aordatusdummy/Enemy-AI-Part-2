@@ -6,7 +6,7 @@ public class AircraftController : MonoBehaviour
 {
     #region Variables that are protected
     // List of all colliders of the aircraft
-    protected List<AircraftCollider> airPlaneColliders = new List<AircraftCollider>();
+    protected List<AircraftCollider> airCraftColldiers = new List<AircraftCollider>();
 
     // Maximum speed of the aircraft
     protected float maxSpeed = 0.6f;
@@ -94,7 +94,7 @@ public class AircraftController : MonoBehaviour
 
             //Add airplane collider to the current object and add it to the list
             AircraftCollider _airplaneCollider = _currentObject.GetComponent<AircraftCollider>();
-            airPlaneColliders.Add(_airplaneCollider);
+            airCraftColldiers.Add(_airplaneCollider);
 
             //Add rigidbody to the current object
             Rigidbody _rb = _currentObject.GetComponent<Rigidbody>();
@@ -154,9 +154,9 @@ public class AircraftController : MonoBehaviour
     protected bool HitSometing()
     {
         //Loop through the airplane colliders and check if any of them collide with something
-        for (int i = 0; i < airPlaneColliders.Count; i++)
+        for (int i = 0; i < airCraftColldiers.Count; i++)
         {
-            if (airPlaneColliders[i].collideSometing)
+            if (airCraftColldiers[i].collideSometing)
             {
                 return true;
             }
@@ -173,10 +173,10 @@ public class AircraftController : MonoBehaviour
         rb.useGravity = true;
 
         //Change every collider trigger state and remove rigidbodys
-        for (int i = 0; i < airPlaneColliders.Count; i++)
+        for (int i = 0; i < airCraftColldiers.Count; i++)
         {
-            airPlaneColliders[i].GetComponent<Collider>().isTrigger = false;
-            Destroy(airPlaneColliders[i].GetComponent<Rigidbody>());
+            airCraftColldiers[i].GetComponent<Collider>().isTrigger = false;
+            Destroy(airCraftColldiers[i].GetComponent<Rigidbody>());
         }
 
         //Kill player

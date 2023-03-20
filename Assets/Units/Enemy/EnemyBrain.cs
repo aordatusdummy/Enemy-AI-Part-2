@@ -16,8 +16,6 @@ public class EnemyBrain : MonoBehaviour
         aBase = ab;
 
         FixingBaseData();
-        GenerateWayPoints();
-
     }
 
     private void FixingBaseData()
@@ -28,9 +26,9 @@ public class EnemyBrain : MonoBehaviour
 
     #region WayPoints
     [SerializeField] private bool randomWayPoints;
-    [SerializeField] private float v1 = 10; //number of way points
-    [SerializeField] private float v2 = 10; //distance between wayPoints
-    public List<Vector3> wayPoints { get; set; }
+    public int DistanceBetweenWayPoints { get; set; } = 10;
+    public int NumberOfWayPoints { get; set; } = 10;
+    public List<Vector3> WayPoints { get; set; }
     public void GenerateWayPoints()
     {
         if(randomWayPoints)
@@ -40,29 +38,29 @@ public class EnemyBrain : MonoBehaviour
         }
 
         Vector3 currentWayPoint = this.transform.position;
-        wayPoints = new List<Vector3>();
-        for (int i = 0; i < v1; i++)
+        WayPoints = new List<Vector3>();
+        for (int i = 0; i < NumberOfWayPoints; i++)
         {
             Vector3 newWayPoint = new Vector3();
-            Vector3 lastWayPoint = (i == 0) ? currentWayPoint : wayPoints[i-1];
-
+            Vector3 lastWayPoint = (i == 0) ? currentWayPoint : WayPoints[i-1];
+            print(lastWayPoint + " + " + DistanceBetweenWayPoints);
             //v1
-            newWayPoint.z = lastWayPoint.z + v2;
+            newWayPoint.z = lastWayPoint.z + DistanceBetweenWayPoints;
 
             //v2
-            newWayPoint.y = lastWayPoint.y + v3Analyzing(wayPoints, lastWayPoint);
+            newWayPoint.y = lastWayPoint.y + v3Analyzing(WayPoints, lastWayPoint);
 
             //v3
-            newWayPoint.z = lastWayPoint.x + Random.Range(-1, 1);
-            wayPoints.Add(newWayPoint);
+            newWayPoint.x = lastWayPoint.x + Random.Range(-1, 1);
+            WayPoints.Add(newWayPoint);
         }
     }
     public void GenerateRandomWayPoints()
     {
-        wayPoints = new List<Vector3>();
-        for (int i = 0; i < v1; i++)
+        WayPoints = new List<Vector3>();
+        for (int i = 0; i < NumberOfWayPoints; i++)
         {
-            wayPoints.Add(GenerateSingleRandomWayPoint());
+            WayPoints.Add(GenerateSingleRandomWayPoint());
         }
     }
     public Vector3 GenerateSingleRandomWayPoint()
@@ -72,16 +70,15 @@ public class EnemyBrain : MonoBehaviour
     #endregion
 
     #region Analyzing Base Classes
-
     private float v3Analyzing(List<Vector3> currentWayPointsList, Vector3 lastWayPoint)
     {
         var msa = aBase.MaxSafeAltitude;
         var bap = eBase.BehaviorAltitudePreference.StatGet;
         var zin = eBase.BehaviorAltitudePreference.StatBase;
 
-        int direction = (lastWayPoint.y >= bap*msa/100) ? 0 : 1;
+        int direction = (lastWayPoint.y >= bap * msa / 100) ? 0 : 1;
 
-        return direction*v2;
+        return direction * DistanceBetweenWayPoints;
     }
 
     private float sensitivity = 1f;
@@ -100,12 +97,7 @@ public class EnemyBrain : MonoBehaviour
             return false;
         }
     }
-    /*
-    1. How to get 32 wishes in 8 days... How to get 4 wishes everyday... 
-    2. 4x160=640 needed 
-    3. How to get 28 wishes in 9 days... How to get 3 wishes everyday...
-    4. 
-     */
+
     #endregion
 
     #region Utility
@@ -144,7 +136,6 @@ public class EnemyBrain : MonoBehaviour
                 print("What is this range type bruh");
                 return new Vector3(0, 0, 0);
             }
-
             return res;
         }
     }
