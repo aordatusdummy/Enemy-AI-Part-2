@@ -46,7 +46,7 @@ MonoBehaviour:
     y: 0
     width: 1920
     height: 1037
-  m_MinSize: {x: 875, y: 542}
+  m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
   m_UseTopView: 1
   m_TopViewHeight: 30
@@ -118,10 +118,10 @@ MonoBehaviour:
     y: 30
     width: 1920
     height: 987
-  m_MinSize: {x: 678, y: 492}
-  m_MaxSize: {x: 14001, y: 14042}
+  m_MinSize: {x: 679, y: 492}
+  m_MaxSize: {x: 14002, y: 14042}
   vertical: 1
-  controlID: 2208
+  controlID: 15
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -143,10 +143,10 @@ MonoBehaviour:
     y: 0
     width: 1920
     height: 987
-  m_MinSize: {x: 678, y: 492}
-  m_MaxSize: {x: 14001, y: 14042}
+  m_MinSize: {x: 679, y: 492}
+  m_MaxSize: {x: 14002, y: 14042}
   vertical: 0
-  controlID: 2209
+  controlID: 16
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -171,7 +171,7 @@ MonoBehaviour:
   m_MinSize: {x: 403, y: 492}
   m_MaxSize: {x: 10001, y: 14042}
   vertical: 1
-  controlID: 2210
+  controlID: 17
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -196,7 +196,7 @@ MonoBehaviour:
   m_MinSize: {x: 403, y: 221}
   m_MaxSize: {x: 8003, y: 4021}
   vertical: 0
-  controlID: 2211
+  controlID: 18
 --- !u!114 &9
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -372,7 +372,7 @@ MonoBehaviour:
       y: 21
       width: 929
       height: 539
-    m_Scale: {x: 0.24192707, y: 0.24192707}
+    m_Scale: {x: 0.24192709, y: 0.24192707}
     m_Translation: {x: 464.5, y: 269.5}
     m_MarginLeft: 0
     m_MarginRight: 0
@@ -380,9 +380,9 @@ MonoBehaviour:
     m_MarginBottom: 0
     m_LastShownAreaInsideMargins:
       serializedVersion: 2
-      x: -1920.0001
+      x: -1920
       y: -1113.972
-      width: 3840.0002
+      width: 3840
       height: 2227.944
     m_MinimalGUI: 1
   m_defaultScale: 0.24192709
@@ -420,9 +420,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: e85e0000
+      m_SelectedIDs: 1c070000
       m_LastClickedID: 0
-      m_ExpandedIDs: 945dffff9a5dffff6eb9fffff8c6ffff1ac7ffff36c7ffff3cc7ffffc8c7ffffeac7ffff6ec9ffff7cc9ffff3afbffff3a820100
+      m_ExpandedIDs: 3afbffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -600,13 +600,13 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets
+    - Assets/Control
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Assets
+  - Assets/Control
   m_LastFoldersGridSize: 16
   m_LastProjectPath: E:\Ali\(Main) Enemy AI Flight Trainer\Project Directory (Stage
     5-9)
@@ -614,8 +614,8 @@ MonoBehaviour:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: c05e0000
-    m_LastClickedID: 24256
+    m_SelectedIDs: ea5e0000
+    m_LastClickedID: 24298
     m_ExpandedIDs: 00000000c05e0000c25e0000c45e0000c65e0000c85e0000ca5e000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -644,7 +644,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000c05e0000c25e0000c45e0000c65e0000c85e0000ca5e000000ca9a3b
+    m_ExpandedIDs: 00000000c05e0000c25e0000c45e0000c65e0000c85e0000ca5e0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -671,7 +671,7 @@ MonoBehaviour:
   m_ListAreaState:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 0
+    m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: c6230000aa430000ac430000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -740,7 +740,7 @@ MonoBehaviour:
   m_MinSize: {x: 275, y: 50}
   m_MaxSize: {x: 4000, y: 4000}
   m_TitleContent:
-    m_Text: Debug
+    m_Text: Inspector
     m_Image: {fileID: -2667387946076563598, guid: 0000000000000000d000000000000000, type: 0}
     m_Tooltip: 
   m_Pos:
@@ -757,7 +757,7 @@ MonoBehaviour:
     m_ControlHash: -371814159
     m_PrefName: Preview_InspectorPreview
   m_LastInspectedObjectInstanceID: -1
-  m_LastVerticalScrollValue: 0
+  m_LastVerticalScrollValue: 56
   m_GlobalObjectId: 
   m_LockTracker:
     m_IsLocked: 0
